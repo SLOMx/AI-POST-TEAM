@@ -1,63 +1,55 @@
-```css
-body {
-  font-family: Arial, sans-serif;
-  direction: rtl;
-  background: #222;
-  color: #eee;
-  padding: 20px;
-}
+```js
+document.getElementById("postForm").addEventListener("submit", function (e) {
+  e.preventDefault();const teamName = document.getElementById("teamName").value.trim();
+  const playersNames = document.getElementById("playersNames").value.trim().split(",");
+  const teamLogoFile = document.getElementById("teamLogo").files[0];
+  const playersImagesFiles = Array.from(document.getElementById("playersImages").files);
+  const preview = document.getElementById("postPreview");
+  const downloadBtn = document.getElementById("downloadBtn");
 
-.container {
-  max-width: 600px;
-  margin: auto;
-  background: #333;
-  padding: 20px;
-border-radius: 8px;
-}
+  if (!teamLogoFile || playersImagesFiles.length === 0) {
+    alert("يرجى رفع الشعار وصور اللاعبين.");
+    return;
+  }
 
-label {
-  display: block;
-  margin-top: 15px;
-}
+  preview.innerHTML = "";
 
-input[type="text"],
-input[type="file"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 4px;
-  border: none;
-}
+  // اسم الفريق
+  const title = document.createElement("h2");
+  title.textContent = `🎯 فريق: ${teamName}`;
+  preview.appendChild(title);
 
-button {
-  margin-top: 20px;
-  padding: 10px 15px;
-  background: #0066cc;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
+  // شعار الفريق
+  const logoImg = document.createElement("img");
+  logoImg.className = "logo";
+  logoImg.src = URL.createObjectURL(teamLogoFile);
+  logoImg.alt = "لوجو الفريق";
+  preview.appendChild(logoImg);
 
-button:hover {
-  background: #004999;
-}
+  // أسماء اللاعبين
+  const namesList = document.createElement("p");
+  namesList.textContent = "👥 اللاعبين: " + playersNames.map(name => name.trim()).join(", ");
+  preview.appendChild(namesList);
 
-.post-preview {
-  margin-top: 20px;
-  background: #111;
-  padding: 10px;
-  border-radius: 8px;
-}
+  // صور اللاعبين
+  const imagesContainer = document.createElement("div");
+  playersImagesFiles.forEach(file => {
+    const img = document.createElement("img");img.src = URL.createObjectURL(file);
+    img.alt = "لاعب";
+    imagesContainer.appendChild(img);
+  });
+  preview.appendChild(imagesContainer);
 
-.post-preview img {
-  max-width: 100px;
-  margin: 5px;
-  border-radius: 5px;
-}
+  // عرض زر التحميل
+  downloadBtn.style.display = "inline-block";
+});
 
-.post-preview .logo {
-  max-width: 150px;
-  display: block;
-  margin-bottom: 10px;
-}
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const post = document.getElementById("postPreview");
+  html2canvas(post).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "team-post.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+});
