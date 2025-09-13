@@ -1,0 +1,35 @@
+```html
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إنشاء بوست فريق الألعاب</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>إنشاء بوست فريق الألعاب</h1>
+    <form id="postForm">
+      <label>اسم الفريق:</label>
+      <input type="text" id="teamName" required />
+
+      <label>أسماء اللاعبين (مفصولة بفواصل):</label>
+      <input type="text" id="playersNames" required />
+
+      <label>رفع لوجو الفريق:</label>
+      <input type="file" id="teamLogo" accept="image/*" required />
+
+      <label>رفع صور اللاعبين (يمكن اختيار عدة صور):</label>
+      <input type="file" id="playersImages" accept="image/*" multiple required />
+
+      <button type="submit">إنشاء بوست</button>
+    </form>
+
+    <h2>معاينة البوست:</h2>
+    <div id="postPreview" class="post-preview"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+```css
+body {
+  font-family: Arial, sans-serif;
+  direction: rtl;
+  background: #222;
+  color: #eee;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #333;
+  padding: 20px;
+border-radius: 8px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+}
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: none;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background: #0066cc;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #004999;
+}
+
+.post-preview {
+  margin-top: 20px;
+  background: #111;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.post-preview img {
+  max-width: 100px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.post-preview .logo {
+  max-width: 150px;
+  display: block;
+  margin-bottom: 10px;
+}
