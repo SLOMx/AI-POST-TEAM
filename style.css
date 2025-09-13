@@ -1,55 +1,61 @@
-```js
-document.getElementById("postForm").addEventListener("submit", function (e) {
-  e.preventDefault();const teamName = document.getElementById("teamName").value.trim();
-  const playersNames = document.getElementById("playersNames").value.trim().split(",");
-  const teamLogoFile = document.getElementById("teamLogo").files[0];
-  const playersImagesFiles = Array.from(document.getElementById("playersImages").files);
-  const preview = document.getElementById("postPreview");
-  const downloadBtn = document.getElementById("downloadBtn");
+css
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  direction: rtl;
+}
 
-  if (!teamLogoFile || playersImagesFiles.length === 0) {
-    alert("يرجى رفع الشعار وصور اللاعبين.");
-    return;
+#result {
+  background: #121417;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 15px #0d6efd88;
+}
+
+#result img {
+  max-width: 300px;
+  border-radius: 10px;
+  margin: 10px auto;pImg.src = src;
+        pImg.onload = () => {
+          ctx.drawImage(pImg, xPos + i * (imgSize + 20), yPos, imgSize, imgSize);
+          if (i === playersDataURLs.length - 1) {
+            // عرض الصورة النهائية
+            const dataURL = canvas.toDataURL("image/png");
+            showResult(dataURL);
+          }
+        };
+      });
+    };
+  } catch (error) {
+    alert("حدث خطأ: " + error.message);
+    loading.style.display = "none";
   }
-
-  preview.innerHTML = "";
-
-  // اسم الفريق
-  const title = document.createElement("h2");
-  title.textContent = `🎯 فريق: ${teamName}`;
-  preview.appendChild(title);
-
-  // شعار الفريق
-  const logoImg = document.createElement("img");
-  logoImg.className = "logo";
-  logoImg.src = URL.createObjectURL(teamLogoFile);
-  logoImg.alt = "لوجو الفريق";
-  preview.appendChild(logoImg);
-
-  // أسماء اللاعبين
-  const namesList = document.createElement("p");
-  namesList.textContent = "👥 اللاعبين: " + playersNames.map(name => name.trim()).join(", ");
-  preview.appendChild(namesList);
-
-  // صور اللاعبين
-  const imagesContainer = document.createElement("div");
-  playersImagesFiles.forEach(file => {
-    const img = document.createElement("img");img.src = URL.createObjectURL(file);
-    img.alt = "لاعب";
-    imagesContainer.appendChild(img);
-  });
-  preview.appendChild(imagesContainer);
-
-  // عرض زر التحميل
-  downloadBtn.style.display = "inline-block";
 });
 
-document.getElementById("downloadBtn").addEventListener("click", () => {
-  const post = document.getElementById("postPreview");
-  html2canvas(post).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "team-post.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  });
-});
+function showResult(dataURL) {
+  loading.style.display = "none";
+  result.innerHTML = `
+    <h3>النتيجة:</h3>
+    <img src="dataURL" alt="بوست الفريق" />
+    <a href="{dataURL}" download="team-post.png" class="btn btn-success mt-3">⬇️ تحميل البوست</a>
+  `;
+}
+
+// دالة لفك التفاف النص داخل canvas
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      line = words[n] + " ";
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, y);
+}
+```
