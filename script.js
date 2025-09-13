@@ -1,81 +1,34 @@
-```css
-body {font-family: 'Arial', sans-serif;
-  direction: rtl;
-  background: #0d1117;
-  color: #e6edf3;
-  margin: 0;
-  padding: 20px;
-}
+js
+const form = document.getElementById("postForm");
+const loading = document.getElementById("loading");
+const result = document.getElementById("result");
 
-.container {
-  max-width: 700px;
-  margin: auto;
-  background: #161b22;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #000;
-}
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-h1, h2 {
-  text-align: center;
-  color: #58a6ff;
-}
+  // اظهار لودر
+  loading.style.display = "block";
+  result.innerHTML = "";
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+  // جمع البيانات
+  const teamName = document.getElementById("teamName").value.trim();
+  const playersNames = document.getElementById("playersNames").value.trim().split(",");
+  const teamLogoFile = document.getElementById("teamLogo").files[0];
+  const playersImagesFiles = Array.from(document.getElementById("playersImages").files);
 
-input[type="text"],
-input[type="file"],
-button {
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  font-size: 16px;
-}
+  // قراءة الصور للعرض
+  const readFile = (file) =>
+    new Promise((res) => {
+      const reader = new FileReader();
+      reader.onload = () => res(reader.result);
+      reader.readAsDataURL(file);
+    });
 
-input[type="text"],
-input[type="file"] {
-  background: #0d1117;
-  color: #fff;
-  border: 1px solid #30363d;
-}
+  const logoDataURL = await readFile(teamLogoFile);
+  const playersDataURLs = await Promise.all(playersImagesFiles.map(readFile));
 
-button {
-  background-color: #238636;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background-color: #2ea043;
-}
-
-#actions {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.post-preview {
-  margin-top: 25px;
-  background: #010409;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.post-preview img {
-  max-width: 120px;
-  margin: 10px;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-}
-
-.post-preview .logo {
-  max-width: 160px;
-  display: block;
-  margin: 0 auto 15px auto;
-}
+  // طلب إنشاء وصف بوست من OpenAI
+  try {
+    const prompt = `
+      صمم لي بوست تسويقي احترافي وملهم لفريق ألعاب اسمه teamName يتكون من اللاعبين:{playersNames.join(", ")}.
+      اكتب نص قصير وجذاب للبوست.
