@@ -1,45 +1,81 @@
-```js
-document.getElementById("postForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+```css
+body {font-family: 'Arial', sans-serif;
+  direction: rtl;
+  background: #0d1117;
+  color: #e6edf3;
+  margin: 0;
+  padding: 20px;
+}
 
-  const teamName = document.getElementById("teamName").value.trim();
-  const playersNames = document.getElementById("playersNames").value.trim().split(",");
-  const teamLogoFile = document.getElementById("teamLogo").files[0];
-  const playersImagesFiles = Array.from(document.getElementById("playersImages").files);
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #161b22;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #000;
+}
 
-  if (!teamLogoFile || playersImagesFiles.length === 0) {
-    alert("يرجى رفع الشعار وصور اللاعبين.");
-    return;
-  }
+h1, h2 {
+  text-align: center;
+  color: #58a6ff;
+}
 
-  const postPreview = document.getElementById("postPreview");
-postPreview.innerHTML = "";
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-  // عرض اسم الفريق
-  const title = document.createElement("h3");
-  title.textContent = `فريق: ${teamName}`;
-  postPreview.appendChild(title);
+input[type="text"],
+input[type="file"],
+button {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+}
 
-  // عرض الشعار
-  const logoImg = document.createElement("img");
-  logoImg.className = "logo";
-  logoImg.src = URL.createObjectURL(teamLogoFile);
-  logoImg.alt = "لوجو الفريق";
-  postPreview.appendChild(logoImg);
+input[type="text"],
+input[type="file"] {
+  background: #0d1117;
+  color: #fff;
+  border: 1px solid #30363d;
+}
 
-  // عرض أسماء اللاعبين
-  const namesList = document.createElement("p");
-  namesList.textContent = "اللاعبون: " + playersNames.map(name => name.trim()).join(", ");
-  postPreview.appendChild(namesList);
+button {
+  background-color: #238636;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  // عرض صور اللاعبين
-  const imagesContainer = document.createElement("div");
-  playersImagesFiles.forEach(file => {
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.alt = "صورة لاعب";
-    imagesContainer.appendChild(img);
-  });
-  postPreview.appendChild(imagesContainer);
-});
-```
+button:hover {
+  background-color: #2ea043;
+}
+
+#actions {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.post-preview {
+  margin-top: 25px;
+  background: #010409;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.post-preview img {
+  max-width: 120px;
+  margin: 10px;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+}
+
+.post-preview .logo {
+  max-width: 160px;
+  display: block;
+  margin: 0 auto 15px auto;
+}
